@@ -29,12 +29,41 @@ app.post("/newuser", (req,res) =>{
 });
 
 app.get("/user/:id", (req,res) =>{
-    const id = parseInt(req.params['id'])
+    let id = parseInt(req.params['id'])
     console.log(id)
-    const user = devs.find(user => user.id === id)
-    return res.send(user)
-    
+    let user = devs.find(user => user.id === id)
+    if(!(user)){
+        return res.status(404).send("Usuario não encontrado")
+    }else{
+        return res.send(user)
+    }  
 });
+
+app.put("/update/:id", (req,res) =>{
+    let id = parseInt(req.params['id'])
+    let user = devs.find( user => user.id === id)
+    if(!(user)){
+        return res.status(404).send(`Usuario: ${user.id}, Não foi encontrado.`)
+    }else{
+        user.nome = req.body.nome
+        user.idade = req.body.idade
+        user.skil = req.body.skil
+        return res.send(`Usuario: ${user.id}, dados alterado com sucesso.`)
+    }
+})
+
+app.delete("/userdelete/:id", (req,res) => {
+    let id = parseInt(req.params['id'])
+    let index = devs.findIndex(user => user.id === id)
+    if(index === -1){
+        return res.status(404).send("usuário não encontrado")
+    } else {
+        let user = devs[index]
+        devs.splice(index,1)
+        return res.send(`Usuário ${user.nome} deletado com sucesso!`)
+    }
+});
+
 
 app.listen(3000,() =>{
     console.log('Acessar http://localhost:3000')
