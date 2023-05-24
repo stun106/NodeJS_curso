@@ -3,6 +3,6 @@ exports.paginaInicial = (req,res) =>{
 }
 
 exports.resposta = (req,res) =>{
+    res.send(req.body.cliente)
     console.log(req.body)
-    res.send(`Recebi o formulario ${req.body['nome']} ${req.body['senha']}`);
 }
