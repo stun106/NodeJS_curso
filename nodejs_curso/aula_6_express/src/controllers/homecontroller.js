@@ -1,11 +1,9 @@
-const HomeModel = require('../models/homeModel');
-
-HomeModel.find()
-    .then(dados => console.log(dados))
-    .catch(e => console.log(e))    
-
 exports.paginaInicial = (req,res) =>{
-    res.render('index')      
+    res.render('index',{
+                    titulo: 'titulo da pagina ',
+                    numeros: [0,1,5,6,8,9]                
+                    });
+                    return;      
 }
 
 exports.resposta = (req,res) =>{

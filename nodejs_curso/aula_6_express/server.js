@@ -15,8 +15,13 @@ mongoose.connect(process.env.CONNECTIONSTRING, {useNewUrlParser: true,useUnified
     })
     .catch( e => console.log(e))
 
+const session = require("express-session");
+const flash = require("connect-flash")
+const MongoStore = require('connect-mongo');
+
 // rotas
 const routes = require("./router");
+
 
 //usando metodos e modulos importados. 
 app.use(express.urlencoded({extended:true}));
@@ -24,6 +29,18 @@ app.use(express.urlencoded({extended:true}));
 //conteudo statico
 app.use(express.static(path.resolve(__dirname,'public')));
 
+const sessionOptions = session({
+    secret: "dawd#das*dcd*ccsddc#ddw125",
+    store: MongoStore.create({ mongoUrl: process.env.CONNECTIONSTRING }),
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+        httpOnly: true
+    }
+});
+app.use(sessionOptions);
+app.use(flash())
 //pegando caminho absoluto para pasta views 
 app.set("views",path.resolve(__dirname,'src','views'));
 
